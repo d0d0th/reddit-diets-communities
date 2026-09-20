@@ -1,0 +1,22 @@
+ENVIRONMENT REPORT
+============================================================
+Generated at: 2026-09-20 11:50:00
+
+Machine Information
+------------------------------------------------------------
+Operating System: Windows 11 (10.0.26100)
+Machine: AMD64
+Processor: Intel64 Family 6 Model 186 Stepping 3, GenuineIntel
+CPU cores (logical): 12
+Total RAM (GB): 15.66
+Python version: 3.13.14 (CPython)
+
+Input Files
+------------------------------------------------------------
+File: diets_submissions_2023_2024.json
+  Size: 115.08 MB (120666406 bytes)
+  Last modified: 2025-04-09 08:53:11
+
+File: diets_comments_2023_2024.json
+  Size: 1642.09 MB (1721852624 bytes)
+  Last modified: 2025-04-14 16:33:01

@@ -1,0 +1,5 @@
+{
+  "log_base": 10,
+  "min_percentile": 95,
+  "speaker_dedup": true
+}

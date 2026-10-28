@@ -1,5 +1,20 @@
 {
-  "log_base": 10,
+  "activity_depths": null,
+  "background": "filtered",
+  "comid_version": "0.1.0.dev0",
+  "group_key": "subreddit",
+  "lexical_depths": [
+    0
+  ],
+  "log_base": 2,
   "min_percentile": 95,
-  "speaker_dedup": true
+  "period_range": [
+    "2023-01",
+    "2024-12"
+  ],
+  "period_type": "m",
+  "sample_per_period": null,
+  "seed": null,
+  "speaker_dedup": true,
+  "words_field": "parsed"
 }

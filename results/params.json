@@ -1,7 +1,7 @@
 {
   "activity_depths": null,
   "background": "filtered",
-  "comid_version": "0.1.0.dev0",
+  "comid_version": "0.1.0",
   "group_key": "subreddit",
   "lexical_depths": [
     0

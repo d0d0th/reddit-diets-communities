@@ -1,15 +1,15 @@
 
-## Run on 2026-10-27 16:32
+## Run on 2026-11-15 11:47
 
-- **comid**: 0.1.0.dev0
+- **comid**: 0.1.0
 - **Parameters**: PERIOD_TYPE='m', WINDOW=('2023-01', '2024-12'), MIN_PERCENTILE=95, LOG_BASE=2, TAGS=['NOUN', 'PROPN']
 
-### Durations (read from this run's cell outputs; "n/a" = not timed)
-- Loading the JSON files (`load_json_files`): ~22 s
-- Cleaning (`clean_data`): ~4 s
-- Building the Convokit corpus (`ConvoCorpus`): ~12 s
-- `ConvoTextParser.transform` (POS-tagging, 1,391,124 utterances): n/a (only progress output, no timestamps)
-- `IdentityMetrics.from_corpus`: n/a
+### Durations (measured with a stopwatch around each step in this run)
+- Loading the JSON files (`load_json_files`): 28.1 s
+- Cleaning (`clean_data`): 11.9 s
+- Building the Convokit corpus (`ConvoCorpus`): 50.3 s
+- `ConvoTextParser.transform` (POS-tagging, 1,391,124 utterances): 51 min 49 s
+- `IdentityMetrics.from_corpus`: 1 min 49 s
 
 ### Reconciliation with the draft version (`results/draft_values.csv`, December)
 
@@ -42,10 +42,23 @@ corpus construction: when creating the `Speaker` for a reply's author for the fi
 This wrongly attributes each distinct user's first reply in a thread to the OC author's identity, artificially inflating the apparent
 overlap of users between periods whenever the OC author remains active (common in long-lived threads). The
 `comid.convobridge.ConvoCorpus` used in this version fixes this bug (`id=comid.posts[reply]['author_id']`), so
-the retention values here are considered correct; the draft's higher values are an artifact of the corpus
-construction, not a real effect of `log_base`, percentile, or the time window.
+the retention values here are considered correct.
 
-### Size-ordering check
-rho(D, n_lexical) went from -0.98 at natural size to "
--0.25 (150/period) and -0.90 (500/period) at equal size, and  rho(N, n_lexical) from -0.95 to -0.68/-0.68 
--- the size-based ordering does not survive equal-size subsampling.
+This is demonstrated rather than asserted: replaying the draft's construction over this run's corpus
+reproduces the eight December retention values (max absolute difference 5.6e-17), and
+changing only that one line gives 0.53x the December values on average (range
+0.42 to 0.62). The remaining factor up to this version's values
+(1.16x on average) comes from the other differences between the draft's retention and
+`IdentityMetrics`: UTC month keys instead of local time, the `WINDOW`, and averaging only over months with
+active users instead of counting empty months as zero; it is not decomposed further here.
+
+### Size-ordering check (correlations against natural size)
+
+All correlations use each community's natural size (`n_lexical` of the `window=on` run; `n_active` gives the same rank correlations), not the size left after sampling. Spearman rho, `window=on` -> 150/period -> 500/period -> 30/period:
+
+- eight communities: rho(D) -0.98 -> -0.21 -> -0.83 -> -0.43; rho(N) -0.95 -> -0.40 -> -0.62 -> -0.43.
+- seven communities, without veganketo: rho(D) -0.96 -> +0.18 -> -0.75 -> -0.14; rho(N) -0.93 -> -0.11 -> -0.43 -> -0.14.
+
+The size-based ordering does not survive equal-size subsampling (verdict on the seven communities that are really equalised: same sign and at least half of the baseline magnitude, for D and N at 150 and 500 per period).
+
+`sample_per_period=30` equalises all eight communities at the cost of noise. Standard deviation across seeds 0-9, mean (max) over communities: D 0.064 (0.094), N 0.072 (0.107).
